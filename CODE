@@ -1,0 +1,81 @@
+# Simple in-memory To-Do list implementation
+
+tasks = []
+task_id_counter = 1
+
+def addtask(taskname, description):
+    global task_id_counter
+    task = {
+        'id': task_id_counter,
+        'task_name': taskname,
+        'description': description,
+        'is_completed': False
+    }
+    tasks.append(task)
+    task_id_counter += 1
+    print("Task added successfully")
+
+def viewtask():
+    if tasks:
+        for task in tasks:
+            print(f"Task ID: {task['id']}, Task Name: {task['task_name']}, Description: {task['description']}, Completed: {'Yes' if task['is_completed'] else 'No'}")
+    else:
+        print("No tasks in the list")
+
+def markcompleted(taskid):
+    for task in tasks:
+        if task['id'] == taskid:
+            task['is_completed'] = True
+            print("Task marked as completed")
+            return
+    print("Task not found")
+
+def deletetask(taskid):
+    global tasks
+    tasks = [task for task in tasks if task['id'] != taskid]
+    print("Task deleted successfully")
+
+if __name__ == "__main__":
+    while True:
+        print("\n--- To Do List ---")
+        print("1. Add Task")
+        print("2. View Tasks")
+        print("3. Mark Task as Completed")
+        print("4. Delete Task")
+        print("5. Exit")
+
+        try:
+            choice = int(input("Enter your choice: "))
+        except ValueError:
+            print("Please enter a valid number")
+            continue
+
+        if choice == 1:
+            taskname = input("Enter the task name: ")
+            description = input("Enter the description: ")
+            addtask(taskname, description)
+
+        elif choice == 2:
+            print("\n--- Tasks ---")
+            viewtask()
+
+        elif choice == 3:
+            try:
+                taskid = int(input("Enter the task ID to mark as completed: "))
+                markcompleted(taskid)
+            except ValueError:
+                print("Invalid ID")
+
+        elif choice == 4:
+            try:
+                taskid = int(input("Enter the task ID to delete: "))
+                deletetask(taskid)
+            except ValueError:
+                print("Invalid ID")
+
+        elif choice == 5:
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please try again!")
